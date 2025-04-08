@@ -21,9 +21,19 @@ export default function Home() {
     e.preventDefault();
     const res = await fetch('/api/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'test123' // Add your test token here
+      },
       body: JSON.stringify(form),
     });
+    
+    if (!res.ok) {
+      const error = await res.json();
+      alert(error.message || 'Something went wrong');
+      return;
+    }
+    
     const data = await res.json();
     localStorage.setItem('pitchDeck', JSON.stringify(data));
     router.push('/result');
